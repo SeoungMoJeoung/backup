@@ -1,4 +1,4 @@
-# image feature 분류 모델
+# Image Feature 분류 모델
 
 - CNN의 과적합을 이용
 
