@@ -22,8 +22,8 @@
 - data_out
   - 종속변수 : 이미지 속성(파티션 ID, Idistance Key, 참조점으로부터 거리)
   - 독립변수 : Random
+  - 여러
   
-  - 
   ```
   - 파라미터 개수 증가 test
   - Dense 레이어를 순차적으로 줄이며 test
