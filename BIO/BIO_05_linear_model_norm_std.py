@@ -1,3 +1,9 @@
+# 만든이 : 정성모
+# 입력 : raw193.csv
+# 출력 : 0.15~0.06
+# sector, block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
+# 독립변수/종속변수 정규화, 표준화 하여 여러 test 진행
+
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -62,7 +68,7 @@ def main():
 
 	model = linear_model(norm_train_data, train_label, norm_test_data, test_label)
 
-
+# bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
 def bio_queue_preprocessing(x):
 
 	data = np.array(x['block_bio_queue'])
@@ -74,20 +80,17 @@ def bio_queue_preprocessing(x):
 
 	return x
 
-# info
+# info 표준화
 # -2 > x or 2 < x, train_data 300000
 def standardization(x):
 	x = (x - np.mean(x,axis=0)) / np.std(x,axis=0)
 	x = x[x[:]<=2]
 	x = x[x[:]>=-2]
 	x = x.dropna(axis=0)
-#	ls = x.index.values.tolist()
-#	print(len(x))
-#	print(np.min(x,axis=0))
 
 	return x
 
-
+# 정규화
 def normalization(x):
 	x = (x - np.min(x,axis=0)) / (np.max(x,axis=0) - np.min(x,axis=0))
 	x = x.dropna(axis=0)
@@ -118,6 +121,7 @@ def linear_model(X, Y, X_test, Y_test):
 	error_mean = np.mean(np.abs(Y_test - Y_pred), axis=0)
 	print('Error_mean:', error_mean)
 
+	# 가중치 값 
 	w1 = model.layers[0].get_weights()[0]
 	b1 = model.layers[0].get_weights()[1]
 	w2 = model.layers[1].get_weights()[0]
