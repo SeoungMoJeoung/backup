@@ -1,7 +1,7 @@
 # 만든이 : 정성모
 # 입력 : flow.csv
 # 출력 : mse - 0.2~3.0, mae - 0.2~0.3
-# Block event 데이터가 아직 없어 flow 데이터를 통해 먼저 네트워크를 생성하는 과정
+# Block event 데이터가 아직 없어 flow 데이터를 통해 먼저 네트워크를 생성하고 학습을 통해 예측한 데이터와 실제 데이터의 차이 
 
 import tensorflow as tf
 import numpy as np
