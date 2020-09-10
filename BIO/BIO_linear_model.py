@@ -1,3 +1,9 @@
+# 만든이 : 정성모
+# 입력 : raw193.csv
+# 출력 : mse - , mae - 
+# 
+# 데이터를 통해 먼저 네트워크를 생성하고 학습을 통해 예측한 데이터와 실제 데이터의 차이
+
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -6,7 +12,7 @@ from tensorflow.keras import models, layers, utils
 def main():
 	data = pd.read_csv("/home/mo/Project/BIO/raw_cassandra/raw193.csv")
 	data = np.array(data)
-	data = data[data[:,-1]!=0] # y = 0, raw remove
+	data = data[data[:,-1]!=0]		# y = 0, row remove
 	data = data[data[:,-3]!=0]
 
 #	x_train = data[:2281675, 1:-1]
