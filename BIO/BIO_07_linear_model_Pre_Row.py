@@ -1,3 +1,9 @@
+# 만든이 : 정성모
+# 입력 : raw193.csv
+# 출력 : mae - 0.05~0.08
+# block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
+# BIO 사이클의 3개의 이벤트 데이터, Sector, 전의 row 데이터들을 이용하여(5, 8, 10개 rows) RG_COMPLETE 데이터 예측
+
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -15,22 +21,6 @@ def main():
 
 	data = data.reset_index()
 	data.pop('index')
-	#count per second
-#	bbq_count = count_per_second(data['block_bio_queue'])
-#	bg_count = count_per_second(data['block_getrq'])
-#	ns_count = count_per_second(data['nvme_sq'])
-#	brc_count = count_per_second(data['block_rq_complete'])
-#	data['count_bbq'] = bbq_count
-#	data['count_bg'] = bg_count
-#	data['count_ns'] = ns_count
-#	data['count_brc'] = brc_count
-
-	#data write
-#	data.to_csv("new_raw193.csv", mode='w', index=False)
-
-	# coefficient
-#	co = data.corr()
-#	print("original data\n",co)
 	
 	# Convert absolute time to relative time
 	data['block_rq_complete']= data['block_rq_complete'] - data['nvme_sq']
@@ -43,9 +33,6 @@ def main():
 	tail = pre_rows(data, rows)
 	tail = pd.DataFrame(tail)
 	data = pd.concat([tail, data],axis=1)
-
-#	relativeco = data.corr()
-#	print("relative data\n",relativeco)
 
 	# Dividing data into train and test
 	train_data = data.sample(frac=0.8,random_state=0)
@@ -61,9 +48,11 @@ def main():
 	sd_test_data = standardization(test_data)
 	norm_test_data = normalization(sd_test_data)
 
+	# Matching labels and variables, After normalization
 #	train_label = train_label[norm_train_data.index]
 #	test_label = test_label[norm_test_data.index]
 
+	# normalization Extract label
 	train_label = norm_train_data.pop("block_rq_complete")
 	test_label = norm_test_data.pop("block_rq_complete")
 
@@ -85,27 +74,6 @@ def main():
 #	print("y_test\n",test_label.shape)
 
 	model = linear_model(norm_train_data, train_label, norm_test_data, test_label, rows*5+4)
-
-import time
-
-def count_per_second(x):
-	start = time.time()
-	data = np.array(x)
-	temp = np.zeros(len(data))
-	false = 0
-	for i in range(len(data)):
-		test = data[false:i]
-#		print(data[i]-1 < test)
-#		print(i,"번째","False",i - len(test[data[i]-1 < test]),"True",len(test[data[i]-1 < test]))
-#		print()
-		true = (test[data[i]-1<test])
-		false = i - len(true)
-		temp[i] = len(true)
-#		test = data[false:i]
-		if i % 100000 == 0:
-			print(i,", time :", time.time() - start)
-#	print("time :", time.time() - start)
-	return temp
 
 def pre_rows(x, rows):
 
