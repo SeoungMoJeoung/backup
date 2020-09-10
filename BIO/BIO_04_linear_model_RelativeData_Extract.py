@@ -6,32 +6,29 @@ from tensorflow.keras import models, layers, utils
 def main():
 	data = pd.read_csv("/home/mo/Project/BIO/raw_cassandra/raw193.csv")
 	data = data.copy()
-#	data = data[data['block_rq_complete']!=0]
-#	data = data[data['block_getrq']!=0]
-#	data = data[data['Sector']!=0]
 	data.pop('Size of IO')
 	data.pop('streamid')
 
-#	data = data.loc[0:99]
-	print(data)
-
 #	data.to_csv("Original_data.csv", mode='w',index=False)
-	
-	# coefficient
-#	co = data.corr()
-#	print("original data\n",co)
 	
 	# Convert absolute time to relative time
 	data['block_rq_complete']= data['block_rq_complete'] - data['nvme_sq']
 	data['nvme_sq']= data['nvme_sq'] - data['block_getrq']
 	data['block_getrq']= data['block_getrq'] - data['block_bio_queue']
 	bio_queue_preprocessing(data)
-#	print()
-#	timeco = data.corr()
-#	print("relative time\n",timeco)
-	
-	print(data)
-	
+
 #	data.to_csv("relative_data.csv", mode='w')
+
+# bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
+def bio_queue_preprocessing(x):
+
+	data = np.array(x['block_bio_queue'])
+	temp = np.zeros(len(data))
+	for i in range(len(data)):
+		temp[i] = data[i] - data[0]
+	temp[0] = 0.
+	x['block_bio_queue'] = temp
+
+	return x
 
 main()
