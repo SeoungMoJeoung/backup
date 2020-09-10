@@ -74,18 +74,19 @@ def main():
 #	print("y_test\n",test_label.shape)
 
 	model = linear_model(norm_train_data, train_label, norm_test_data, test_label, rows*5+4)
-
+	
+# input : pandas.DataFrame, 이전 row의 갯수
+# output : pandas.DataFrame
+# 현재 row 기준으로 정해진 이전 row들의 값들을 컬럼으로 추가
+# ex) rows 가 5 인 경우, 현재 row-5번째까지의 값들(sector, bio_queue, ... )을 각 컬럼으로 추가 ※ 최종 컬럼의 갯수는 rows*5+4 = 29개
 def pre_rows(x, rows):
 
-	start = time.time()
 	data = np.array(x)
 	temp_total = np.empty((len(data),rows*5))
 	for i in range(len(data)):
 		temp = np.array([])
 		for j in range(1,rows+1):
 			temp = np.append(temp,data[i-j,:])
-		if  i % 1000000 == 0:
-			print(i,", time :", time.time() - start)
 		temp_total[i] = temp
 	for i in range(rows):
 		temp_total[i,i*5:rows*5] = 0
