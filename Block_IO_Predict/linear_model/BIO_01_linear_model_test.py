@@ -1,8 +1,11 @@
-# 만든이 : 정성모
-# 입력 : flow.csv
-# 출력 : mse - 0.2~3.0, mae - 0.2~0.3
-# Block event 데이터가 아직 없어 flow 데이터를 통해 먼저 네트워크를 생성하고 학습을 통해 예측한 데이터와 실제 데이터의 차이 
-
+'''
+작성일 : 2020-09-10
+작성자 : 정성모
+코드 개요 :
+    Block event 데이터가 아직 없어 flow 데이터를 통해 
+    네트워크를 생성하고 학습을 통해 예측한 데이터와 실제 데이터의 차이 
+결과 : mse - 0.2~3.0, mae - 0.2~0.3
+'''
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -31,8 +34,16 @@ def main():
 
 	linear_model(x_train, y_train, x_test, y_test)
 
-# Dense layer들을 이용하여 네트워크 계층과 필터 수를 변경해 가면서 모델 생성
 def linear_model(X, Y, X_test, Y_test):
+	'''
+	함수 개요 :
+	    Dense layer들을 이용하여 네트워크 계층과 필터 수를 변경해 가면서 모델 생성
+	파라미터 :
+        X = train data X
+		Y = train data Y
+		X_test = test data X
+		Y_test = test data Y
+	'''
 	model = models.Sequential()
 	model.add(layers.Dense(16, input_shape=(5,)))
 	model.add(layers.Dense(32))

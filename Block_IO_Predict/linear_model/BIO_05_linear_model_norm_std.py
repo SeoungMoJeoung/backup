@@ -1,8 +1,11 @@
-# 만든이 : 정성모
-# 입력 : raw193.csv
-# 출력 : 0.15~0.06
-# sector, block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
-# 독립변수/종속변수 정규화, 표준화 하여 여러 test 진행
+'''
+작성일 : 2020-09-10
+작성자 : 정성모
+코드 개요 :
+    block_bio_queue, block_getrq, nvme_sq, block_rq_complete을 상대시간으로 변경
+	독립변수/종속변수 정규화, 표준화 하여 여러 test 진행
+결과 : mae = 0.15~0.06
+'''
 
 import tensorflow as tf
 import numpy as np
@@ -70,7 +73,12 @@ def main():
 
 # bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
 def bio_queue_preprocessing(x):
-
+	'''
+	함수 개요 :
+	    bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	data = np.array(x['block_bio_queue'])
 	temp = np.zeros(len(data))
 	for i in range(len(data)):
@@ -83,6 +91,11 @@ def bio_queue_preprocessing(x):
 # info 표준화
 # -2 > x or 2 < x, train_data 300000
 def standardization(x):
+	'''
+	함수 개요 : Data 표준화
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	x = (x - np.mean(x,axis=0)) / np.std(x,axis=0)
 	x = x[x[:]<=2]
 	x = x[x[:]>=-2]
@@ -92,6 +105,11 @@ def standardization(x):
 
 # 정규화
 def normalization(x):
+	'''
+	함수 개요 : Data 정규화
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	x = (x - np.min(x,axis=0)) / (np.max(x,axis=0) - np.min(x,axis=0))
 	x = x.dropna(axis=0)
 	return x

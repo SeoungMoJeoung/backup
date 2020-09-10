@@ -1,7 +1,9 @@
-# 만든이 : 정성모
-# 입력 : raw193.csv
-# 출력 : Original data, Relative_data
-# block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
+'''
+작성일 : 2020-09-10
+작성자 : 정성모
+코드 개요 :
+    block_bio_queue, block_getrq, nvme_sq, block_rq_complete을 상대시간으로 변경
+'''
 
 import tensorflow as tf
 import numpy as np
@@ -24,9 +26,14 @@ def main():
 
 #	data.to_csv("Relative_data.csv", mode='w')
 
-# bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
-def bio_queue_preprocessing(x):
 
+def bio_queue_preprocessing(x):
+	'''
+	함수 개요 :
+	    bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	data = np.array(x['block_bio_queue'])
 	temp = np.zeros(len(data))
 	for i in range(len(data)):

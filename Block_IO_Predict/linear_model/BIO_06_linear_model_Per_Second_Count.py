@@ -1,8 +1,11 @@
-# 만든이 : 정성모
-# 입력 : raw193.csv or count_per_second 작업한 데이터
-# 출력 : mae - 0.02~0.08
-# block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
-# BIO 사이클의 3개의 이벤트 데이터, Sector, 초당 BIO 이벤트의 갯수를 이용하여 RG_COMPLETE 데이터 예측
+'''
+작성일 : 2020-09-10
+작성자 : 정성모
+코드 개요 :
+    block_bio_queue, block_getrq, nvme_sq, block_rq_complete을 상대시간으로 변경
+	BIO 사이클의 3개의 이벤트 데이터, Sector, 초당 BIO 이벤트의 갯수를 이용하여 RG_COMPLETE 데이터 예측
+결과 : mae = 0.02~0.08
+'''
 
 import tensorflow as tf
 import numpy as np
@@ -90,10 +93,15 @@ def main():
 
 import time
 # input : pandas.colum
-# output : ndarray
-# 해당 row 값의 1초 내에 있는 값들의 row 갯수를 출력
-# ex) row[i] value : 2.123, row[i-1] value : 2.11, row[i-2] value : 2.10, row[i-3] value : 0.10, count : 2
+
 def count_per_second(x):
+	'''
+	함수 개요 :
+	    해당 row 값의 1초 내에 있는 값들의 row 갯수를 출력
+        ex) row[i] value : 2.123, row[i-1] value : 2.11, row[i-2] value : 2.10, row[i-3] value : 0.10, count : 2
+	파라미터 :
+        x = pandas DataFrame 형태에 하나의 colum
+	'''
 	start = time.time()
 	data = np.array(x)
 	temp = np.zeros(len(data))
@@ -114,7 +122,12 @@ def count_per_second(x):
 
 
 def bio_queue_preprocessing(x):
-
+	'''
+	함수 개요 :
+	    bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	data = np.array(x['block_bio_queue'])
 	temp = np.zeros(len(data))
 	for i in range(len(data)):
@@ -127,6 +140,11 @@ def bio_queue_preprocessing(x):
 # info
 # -2 > x or 2 < x, train_data 300000
 def standardization(x):
+	'''
+	함수 개요 : Data 표준화
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	x = (x - np.mean(x,axis=0)) / np.std(x,axis=0)
 	x = x[x[:]<=2]
 	x = x[x[:]>=-2]
@@ -139,6 +157,11 @@ def standardization(x):
 
 
 def normalization(x):
+	'''
+	함수 개요 : Data 정규화
+	파라미터 :
+        x = pandas DataFrame 형태의 원 데이터
+	'''
 	x = (x - np.min(x,axis=0)) / (np.max(x,axis=0) - np.min(x,axis=0))
 	x = x.dropna(axis=0)
 	return x

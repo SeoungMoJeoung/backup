@@ -1,9 +1,11 @@
-
-# 만든이 : 정성모
-# 입력 : raw193.csv
-# 출력 : mae - 0.3
-# Size of IO, streamid, block_bio_queue, block_getrq, nvme_sq를 독립변수로 사용하고, block_rq_complete를 종속변수로 사용 함
-# 각 독립변수의 최솟값을 원 데이터에서 뺀 데이터를 학습데이터로 사용하여 네트워크를 생성하고 학습을 통해 예측한 데이터와 실제 데이터의 차이
+'''
+작성일 : 2020-09-10
+작성자 : 정성모
+코드 개요 :
+    Size of IO, streamid, block_bio_queue, block_getrq, nvme_sq를 독립변수로 사용하고,
+	block_rq_complete를 종속변수로 사용 함. 각 독립변수의 최솟값을 원 데이터에서 뺀 데이터를 학습데이터로 사용
+결과 : mae - 0.3
+'''
 
 import tensorflow as tf
 import numpy as np
