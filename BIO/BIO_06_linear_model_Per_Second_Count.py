@@ -1,3 +1,9 @@
+# 만든이 : 정성모
+# 입력 : raw193.csv or count_per_second 작업한 데이터
+# 출력 : 
+# block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
+# BIO 사이클의 3개의 이벤트 데이터, Sector, 초당 BIO 이벤트의 갯수를 이용하여 RG_COMPLETE 데이터 예측
+
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -49,19 +55,21 @@ def main():
 #	train_label = train_data.pop("block_rq_complete")
 #	test_label = test_data.pop("block_rq_complete")
 
-	#dataset 1) standardization + normalization
+	# dataset 1) standardization + normalization
 	sd_train_data = standardization(train_data)
 	norm_train_data = normalization(sd_train_data)
 	sd_test_data = standardization(test_data)
 	norm_test_data = normalization(sd_test_data)
 
+	# Matching labels and variables, After normalization
 #	train_label = train_label[norm_train_data.index]
 #	test_label = test_label[norm_test_data.index]
 
+	# normalization Extract label
 	train_label = norm_train_data.pop("block_rq_complete")
 	test_label = norm_test_data.pop("block_rq_complete")
 
-	#dataset 2) normalization
+	# dataset 2) normalization
 #	norm_train_data = normalization(train_data)
 #	norm_test_data = normalization(test_data)
 #	scaler = MinMaxScaler()
@@ -81,7 +89,10 @@ def main():
 	model = linear_model(norm_train_data, train_label, norm_test_data, test_label)
 
 import time
-
+# input : pandas.colum
+# output : ndarray
+# 해당 row 값의 1초 내에 있는 값들의 row 갯수를 출력
+# ex) row[i] value : 2.123, row[i-1] value : 2.11, row[i-2] value : 2.10, row[i-3] value : 0.10, count : 2
 def count_per_second(x):
 	start = time.time()
 	data = np.array(x)
