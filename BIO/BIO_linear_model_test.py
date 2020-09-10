@@ -1,9 +1,17 @@
+# 만든이 : 정성모
+# 입력 : flow.csv
+# 출력 : mse - 0.2~3.0, mae - 0.2~0.3
+# Block event 데이터가 아직 없어 flow 데이터를 통해 먼저 네트워크를 생성하는 과정
+
 import tensorflow as tf
 import numpy as np
 import pandas as pd
 from tensorflow.keras import models, layers, utils
 
+
 def main():
+	
+	# flow 데이터를 가져와 shape 형태를 맞쳐 줌 - 전처리
 	data = pd.read_csv("/home/mo/Project/BIO/flow.csv")
 	data = np.array(data)
 	print(data.shape)
@@ -23,6 +31,7 @@ def main():
 
 	linear_model(x_train, y_train, x_test, y_test)
 
+# Dense layer들을 이용하여 네트워크 계층과 필터 수를 변경해 가면서 모델 생성
 def linear_model(X, Y, X_test, Y_test):
 	model = models.Sequential()
 	model.add(layers.Dense(16, input_shape=(5,)))
@@ -40,6 +49,7 @@ def linear_model(X, Y, X_test, Y_test):
 	print(Y_pred)
 	print(Y_test)
 
+	# 모델을 통해 생성된 데이터와 실제 데이터의 차이(mae 이용)
 	error_mean = np.mean(np.abs(Y_test - Y_pred), axis=0)
 	print('Error_mean:', error_mean)
 
