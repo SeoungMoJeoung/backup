@@ -1,6 +1,6 @@
 # 만든이 : 정성모
 # 입력 : raw193.csv or count_per_second 작업한 데이터
-# 출력 : 
+# 출력 : mae - 0.02~0.08
 # block_bio_queue, block_getrq, nvme_sq를 상대시간으로 변경
 # BIO 사이클의 3개의 이벤트 데이터, Sector, 초당 BIO 이벤트의 갯수를 이용하여 RG_COMPLETE 데이터 예측
 
