@@ -3,9 +3,9 @@
 작성자 : 정성모
 코드 개요 :
     Size of IO, streamid, block_bio_queue, block_getrq, nvme_sq를 독립변수로 사용하고,
-	block_rq_complete를 종속변수로 사용 함. 데이터를 통해 먼저 네트워크를 생성하고 학습을
-	통해 예측한 데이터와 실제 데이터의 차이를 구함. Dense layer에 relu를 사용하지 않을 때
-	오차가 적은 이유는 예측 값이 minus value를 가짐
+    block_rq_complete를 종속변수로 사용 함. 데이터를 통해 먼저 네트워크를 생성하고 학습을
+    통해 예측한 데이터와 실제 데이터의 차이를 구함. Dense layer에 relu를 사용하지 않을 때
+    오차가 적은 이유는 예측 값이 minus value를 가짐
 결과 : mae - 0.2~112.0
 '''
 import tensorflow as tf
