@@ -100,7 +100,7 @@ def count_per_second(x):
 	    해당 row 값의 1초 내에 있는 값들의 row 갯수를 출력
         ex) row[i] value : 2.123, row[i-1] value : 2.11, row[i-2] value : 2.10, row[i-3] value : 0.10, count : 2
 	파라미터 :
-        x = pandas DataFrame 형태에 하나의 colum
+            x = pandas DataFrame 형태에 하나의 colum
 	'''
 	start = time.time()
 	data = np.array(x)
@@ -126,7 +126,7 @@ def bio_queue_preprocessing(x):
 	함수 개요 :
 	    bio_queue의 해당 row의 값은 해당 row값에서 첫번째 row 값에서 뺀 값, 첫번째 row 값은 0
 	파라미터 :
-        x = pandas DataFrame 형태의 원 데이터
+            x = pandas DataFrame 형태의 원 데이터
 	'''
 	data = np.array(x['block_bio_queue'])
 	temp = np.zeros(len(data))
@@ -143,7 +143,7 @@ def standardization(x):
 	'''
 	함수 개요 : Data 표준화
 	파라미터 :
-        x = pandas DataFrame 형태의 원 데이터
+            x = pandas DataFrame 형태의 원 데이터
 	'''
 	x = (x - np.mean(x,axis=0)) / np.std(x,axis=0)
 	x = x[x[:]<=2]
@@ -160,7 +160,7 @@ def normalization(x):
 	'''
 	함수 개요 : Data 정규화
 	파라미터 :
-        x = pandas DataFrame 형태의 원 데이터
+            x = pandas DataFrame 형태의 원 데이터
 	'''
 	x = (x - np.min(x,axis=0)) / (np.max(x,axis=0) - np.min(x,axis=0))
 	x = x.dropna(axis=0)
