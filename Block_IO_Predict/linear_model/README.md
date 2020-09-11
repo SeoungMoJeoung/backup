@@ -22,14 +22,6 @@ BIO_03_linear_model_MyPreprocessing.py
 각 독립변수의 최솟값을 원 데이터에서 뺀 데이터를 학습데이터로 사용
 
 ```
-BIO_03_linear_model_MyPreprocessing.py
-```
-독립변수 : Size of IO, streamid, block_bio_queue, block_getrq, nvme_sq  
-종속변수 : block_rq_complete  
-  
-각 독립변수의 최솟값을 원 데이터에서 뺀 데이터를 학습데이터로 사용
-
-```
 BIO_04_linear_model_RelativeData_Extract.py
 ```
 block_bio_queue, block_getrq, nvme_sq, block_rq_complete을 상대시간으로 변경
