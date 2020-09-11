@@ -23,3 +23,7 @@ BIO_04_ARIMA_diff_evaluation_data_process.ipynb
 ```
 예측 데이터와 실제 데이터 차이 확인
 
+```
+BIO_05_ARIMA_data_visualization.ipynb
+```
+Arima로 예측한 데이터와 실제 데이터 시각화
