@@ -37,13 +37,14 @@
 ## 실험
 
 ### 20.07.23  
-src.txt의 DATA를 이용하여 실험 - accuracy 12%  
+- src.txt의 DATA를 이용하여 실험 - accuracy 12%  
 ### 20.07.28
-data.out의 DATA를 이용하여 기존 네트워크에 필터 갯수와 네트워크를 증가하여 실험 - accuracy : 10%  
-data.out의 DATA를 이용하여 네트워크에서 Dense Layer의 필터 수를 적은 폭으로 줄이며 실험 - accuracy : 10%  
-data.out의 DATA를 이용하여 기존 네트워크에 MaxPooling을 추가해서 실험 - accuracy : 10%  
+- data.out의 DATA를 이용하여 기존 네트워크에 필터 갯수와 네트워크를 증가하여 실험 - accuracy : 10%  
+- data.out의 DATA를 이용하여 네트워크에서 Dense Layer의 필터 수를 적은 폭으로 줄이며 실험 - accuracy : 10%  
+- data.out의 DATA를 이용하여 기존 네트워크에 MaxPooling을 추가해서 실험 - accuracy : 10%  
 ### 20.07.30
-data.out의 DATA를 이용하여 ResNet 네트워크 실험 - accuracy : 10%
+- data.out의 DATA를 이용하여 ResNet 네트워크 실험 - accuracy : 10%
 
-- 정확도가 10% 정도로 너무 낮아 사용 할 수 없음. 종속변수와, 독립변수 사이의 연관성이 없으므로 학습을 잘 못하는 것으로 생각하고 있고  
-  추후 Deeplearning을 이용하여 인덱싱 or 서치하는 논문 찾아 볼 것
+### 정리
+정확도가 10% 정도로 너무 낮아 사용 할 수 없음. 종속변수와, 독립변수 사이의 연관성이 없으므로 학습을 잘 못하는 것으로 생각하고 있고  
+추후 Deeplearning을 이용하여 인덱싱 or 서치하는 논문 찾아 볼 것
