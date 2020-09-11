@@ -46,9 +46,9 @@ BIO 사이클의 3개의 이벤트 데이터, Sector, 초당 BIO 이벤트의 �
 
 
 ## BIO_07_linear_model_Pre_Row
-```
+
 독립변수 : Sector, block_bio_queue, block_getrq, nvme_sq, 이전 row들의 값들을 컬럼에 추가
 종속변수 : block_rq_complete
 block_bio_queue, block_getrq, nvme_sq, block_rq_complete을 상대시간으로 변경
 BIO 사이클의 3개의 이벤트 데이터, Sector, 이전 row 데이터들을 이용하여(5, 8, 10개 rows) RG_COMPLETE 데이터 예측
-```
+
