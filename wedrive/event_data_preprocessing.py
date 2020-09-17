@@ -31,8 +31,6 @@ def preprocessing(file_path):
     df = df.dropna(how = 'all')
     data = df.copy()
     data = data[data['제보유형']!='원활']
-    data = data[data['제보유형']!='행사']
-    data = data[data['제보유형']!='기상']
     data = data[data['내용'].str.startswith('(안내)')==False]
     data.reset_index(drop=True, inplace=True)
     
