@@ -15,3 +15,6 @@ event_data_preprocessing.py
 
 ## preprocessing_data
 접수현황조회리스트 전처리 후 데이터
+
+## Web_Server
+카카오맵 api를 이용하여 원하는 데이터의 좌표를 얻기 위한 웹서버
