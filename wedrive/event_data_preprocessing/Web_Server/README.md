@@ -4,9 +4,9 @@
 - 지도의 원하는 지점의 좌표를 얻기 위해 서버 구축
 
 ## 개발이유
-- Kakao 로컬 API의 REST API를 이용하여 간단하게 좌표를 가져오려 했으나,
-- 주소로 나타나는 지도의 범위가 너무 크고 특정 지점(도로 위의 좌표)을 선택하기 어려움
-- Kakao Maps API는 REST API가 없고, Javascript API 지원 하며, 여러 기능이 있어 서버 구축 하게 됨
+- Kakao 로컬 API의 REST API를 이용하여 간단하게 좌표를 가져오려 했으나,  
+주소로 나타나는 지도의 범위가 너무 크고 특정 지점(도로 위의 좌표)을 선택하기 어려움  
+Kakao Maps API는 REST API가 없고, Javascript API 지원 하며, 여러 기능이 있어 서버 구축 하게 됨  
 
 ## 개발환경
 - Node.js (12.18.4 ver), npm (6.14.6 ver)
