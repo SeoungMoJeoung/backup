@@ -13,6 +13,7 @@ Kakao Maps API는 REST API가 없고, Javascript API 지원 하며, 여러 기�
 - Kakao Maps Javascript API
 
 ## 웹 서버 구축
+- Kakao Developers의 사용자 등록 및 Web 플랫폼 생성 (Web 사이트 도메인 설정)
 - Express 프레임워크를 사용, express-generator 모듈이용, -e 옵션으로 ejs라는 View 엔진 사용(기본 jade)
 - Kakao Maps API의 주소를 찾기, 선택 지점 좌표 얻기의 기능을 이용
 
