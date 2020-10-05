@@ -13,9 +13,7 @@
 - 경인교통방송 제보데이터 (원 데이터, 전처리 후 데이터)
 
 ## Web_Server
-- Kakao Maps API의 Javascript API를 사용하기 위한 서버 구축
--
--
+- Kakao Maps API의 Javascript API를 사용하기 위한 서버 구축  
 ```
 event_data_preprocessing.py
 ```
