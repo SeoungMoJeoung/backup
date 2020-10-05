@@ -1,5 +1,9 @@
 # Event_Data
 
+## 개발 환경
+- node.js (ver )
+- Python (ver 3.x)
+
 ## 진행 상황
 - Data 전처리 및 불필요한 데이터 삭제 (20.09.17)
 - Kakao OPEN API를 이용하여 특정 지역 좌표 얻기
@@ -13,7 +17,10 @@
 - 경인교통방송 제보데이터 (원 데이터, 전처리 후 데이터)
 
 ## Web_Server
-- Kakao Maps API의 Javascript API를 사용하기 위한 서버 구축  
+- Kakao Maps API의 Javascript API를 사용하기 위한 서버 구축
+- Node.js의 express-generator 모듈을 사용
+
+## Code
 ```
 event_data_preprocessing.py
 ```
