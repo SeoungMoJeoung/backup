@@ -2,7 +2,8 @@
 
 ## 진행 상황
 - Data 전처리 및 불필요한 데이터 삭제 (20.09.17)
-
+- Kakao OPEN API를 이용하여 특정 지역 좌표 얻기
+    - ㄹㄹ
 ```
 event_data_preprocessing.py
 ```
