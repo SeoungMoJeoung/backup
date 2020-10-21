@@ -1,0 +1,109 @@
+// 아직 구현 안된 부분
+// - 매핑 오류 추정 부분
+
+trajectory2segment(traj)
+{
+    gps_index = 0
+    segment_index = 0
+    segments = {}
+    segments = find_segment(traj[gps_index])
+    s_gps = traj[gps_index]
+    start_segment_index = 0
+    end_segment_index = 0
+    
+
+    for gps in traj[1:]
+    {
+        p2p_distance = min_distance(s_gps, e_gps = gps)
+                
+        if p2p_distance > p2p_value  // GPS들의 거리를 먼저구해 임계값의 포함되면 아래와 같은 계산을 하지 않고 매핑
+        {
+            segment_range = impute_segment_range(gps, segments[segment_index][geometry])
+            
+            if segment_range
+            {
+                p2s_distance = min_distance(gps, segments[segment_index][geometry])
+                heading = bearing(s_gps , e_gps = gps, segments[segment_index][geometry])
+            }
+            else
+            {
+                segment_index = 0
+                segments = next_segments(segments[segment_index][link_id], gps, traj.index(gps), count) // 다음 새그먼트를 현재 새그먼트로 변환, count : 임계 값
+                p2s_distance = min_distance(gps, segments[segment_index][geometry])
+                heading = bearing(s_gps , e_gps = gps, segments[segment_index][geometry])
+            }
+            
+            // 유지
+            if sement_range & p2s_distance < p2s_value & heading
+            {
+                gps_index = traj.index(gps)
+                s_gps = traj[gps_index] // s_gps을 현재 gps로 변환
+            }
+            
+            // 링크 이동
+            esle if not segment_range & p2s_distance < p2s_value
+            {
+                segment_id = segments[0][link_id]
+                end_segment_index = traj.index(gps) - 1
+                mapping[segment_id] = start_segment_index, end_segment_index
+                start_segment_index = end_segment_index + 1 // start_segment_index을 현재 gps index로 변환
+                gps_index = traj.index(gps)
+                s_gps = traj[gps_index] // s_gps을 현재 gps로 변환
+            }
+
+            //링크 유실, 매핑 오류
+            esle if (segment_range & p2s_distance > p2s_value)|(not segment_range & p2s_distance > p2s_value)
+            {
+                // 범위 안  링크 유실, 매핑 오류
+                if segment_range & p2s_distance > p2s_value
+                {
+                    
+                }
+                범위 밖  링크 유실, 매핑 오류
+                else if not segment_range & p2s_distance > p2s_value
+                {
+                    
+                }
+            }
+        }
+    }
+}
+
+
+find_segment(gps)
+{
+    // GPS에 가장 가까운 세그먼트 k 개를 찾음
+    // segments = {[link_id:{F_node, T_node, Lenth, geometry:[gps1, ... gpsn]}, ... ]}
+    return segments
+}
+
+impute_segment_range(gps, segment)
+{
+    // gps가 segment의 양 끝 점을 기준으로 포함되었는지 확인
+    return True or False
+}
+
+min_distance(gps1, gps2, segment)
+{
+    // 2개의 GPS의 거리를 계산 or GPS와 segment의 거리를 계산
+    return int
+}
+
+bearing(s_gps, e_gps, segment)
+{
+    // 두 GPS의 heading value와 segment heading value를 비교하여 유사하면 True, 아니면 Flase
+    return True or False
+}
+
+next_segments(segment, gps, gps_index, count)
+{
+    // segment의 F_node, T_node를 통해서 연결되는 segment를 찾고,
+    // gps = traj[gps_index]부터 min_distance(gps, next_gps)을 계산해 임계값을 벗어나는 포인트 2개를 찾고,
+    // 포인트 2개와 가장 가까운 segment를 리턴
+    // segments = {[link_id:{F_node, T_node, Lenth, geometry:[gps1, ... gpsn]}, ... ]}
+    return segments, index (수정필요 : gps_index or error(ex -1) 다음 gps계산을 미리 하기 때문에)
+}
+
+
+추가 사항
+- 모든 링크는 연결 되어 있으므로 다음 세그먼트가 없는 경우는 없다.
