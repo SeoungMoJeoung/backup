@@ -1,27 +1,27 @@
 // 아직 구현 안된 부분
-// - 매핑 오류 추정
-// - 링크 이동시 next_segments 부분의 반복적 계산 부분 수정
+// - 링크 이동시 next_segments 부분의 반복적 계산 부분 수정 -- 재귀함수 이용 할 예정
 
 trajectory2segment(traj)
 {
-    gps_index = 0
-    segment_index = 0
-    segments = []
-    segment = {}
+    start_segment_index = 0 // 매핑할 세그먼트에 첫번재 포인트의 인덱스
+    end_segment_index = 0 // 매핑할 세그먼트에 마지막 포인트의 인덱스
+    error_weight = 0 // 매핑 추정 과정에서 반복적으로 오류가 발견될 때 확인하는 변수
+    count = 0 // 매핑 추정 과정의 리셋을 위한 카운터
+    mapping = {} // 매핑된 데이터
+    gps_index = 0 // 현재 GPS 인덱스
+    segments = [] // 궤적이 지나는 세그먼트들
+    segment = {} // 궤적이 지나는 세그먼트들 중에 하나의 segment
+    segment_index = 0 // 궤적이 지나는 세그먼트들 중에서 GPS 한점과 가장 가까운 세그먼트를 찾기위한 인덱스
+    segments_index = 0 // 궤적이 지나는 세그먼트들의 인덱스
+
     segment = find_segment(traj[gps_index])
     segments.append(segment)
-    segments_index = 0
-    s_gps = traj[gps_index]
-    start_segment_index = 0
-    end_segment_index = 0
-    error_weight = 0
-    count = 0
+    s_gps = traj[gps_index] // 점과 점사이의 거리가 임계값을 넘어갔을 때, 이전 GPS
 
-    for gps in traj[1:] // 
+    for gps in traj[1:]
     {
         p2p_distance = min_distance(s_gps, e_gps = gps)
         gps_index = traj.index(gps) // 현재 GPS index
-        segment_id = segments[segments_index][segment_index][link_id]
                 
         if p2p_distance > p2p_value  // GPS들의 거리를 먼저구해 임계값의 포함되면 아래와 같은 계산을 하지 않고 매핑
         {
@@ -48,8 +48,8 @@ trajectory2segment(traj)
                 // 마지막 GPS 까지 확인 한 경우
                 if gps_index == len(traj)
                 {
-                    
-                    end_segment_index = gps_index - 1
+                    end_segment_index = s_gps
+                    segment_id = segments[segments_index][segment_index][link_id]
                     mapping[segment_id] = start_segment_index, end_segment_index
                 }
             }
@@ -57,9 +57,10 @@ trajectory2segment(traj)
             // 링크 이동
             esle if not segment_range & p2s_distance < p2s_value
             {
-                end_segment_index = gps_index - 1
-                mapping[segment_id] = start_segment_index, end_segment_index // 전 새그먼트랑 매핑해야함 (수정해야함)
-                start_segment_index = end_segment_index + 1 // start_segment_index을 현재 gps index로 변환
+                end_segment_index = s_gps
+                segment_id = segments[segments_index-1][segment_index][link_id]
+                mapping[segment_id] = start_segment_index, end_segment_index
+                start_segment_index = gps_index // start_segment_index을 현재 gps index로 변환
                 
                 s_gps = traj[gps_index] // s_gps을 현재 gps로 변환
             }
@@ -67,26 +68,42 @@ trajectory2segment(traj)
             //링크 유실, 매핑 오류
             esle if segment_range & p2s_distance > p2s_value
             {
+                weight_s_gps = 0
+                // 매핑 오류 및 링크 유실로 확정날 때, 오류가 발견된 처음 GPS 위치
+                if error_weight == 0
+                {
+                    weight_s_gps = s_gps
+                }
+
+                // 가중치 값을 이용하여 매핑 오류 추정
                 if error_weight == 2
                 {
                     // 범위 안  링크 유실, 매핑 오류
                     if segment_range & p2s_distance > p2s_value
                     {
+                        // find_segment를 하여 링크 유실인지, 매핑 오류인지 확인
                         temp_segment = find_segment(gps)
 
+                        // 매핑 오류
                         if temp_segment
                         {
                             처음으로 되돌아가서 작업 수행 (재귀함수 사용할 예정)
                             segments[0][segment_index+1]
                         }
+
+                        // 링크 유실
                         esle if temp_segment == -1
                         {
+                            end_segment_index = weight_s_gps
+                            segment_id = segments[segments_index][segment_index][link_id]
+                            mapping[segment_id] = start_segment_index, end_segment_index                  
                             break
                         }
                     }
                 }
                 error_weight = error_weight + 1
             }
+            // 잠깐의 오류로 임계값을 넘은경우를 위한 리셋 기능
             count = count + 1
             if count == 3
             {
@@ -128,7 +145,7 @@ next_segments(segments, gps, gps_index, count)
     // gps = traj[gps_index]부터 min_distance(gps, next_gps)을 계산해 임계값을 벗어나는 포인트 2개를 찾고,
     // 포인트 2개와 가장 가까운 segment를 리턴
     // segments = {[link_id:{F_node, T_node, Lenth, geometry:[gps1, ... gpsn]}, ... ]}
-    return segments, index (수정필요 : gps_index or error(ex -1) 다음 gps계산을 미리 하기 때문에)
+    return segments, index (수정필요 : gps_index or error(ex -1) 다음 gps계산을 미리 하기 때문에 - 재귀함수로 해결 할 예정)
 }
 
 
