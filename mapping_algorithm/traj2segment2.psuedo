@@ -1,42 +1,64 @@
 // 아직 구현 안된 부분
-// - 링크 이동시 next_segments 부분의 반복적 계산 부분 수정 -- 재귀함수 이용 할 예정
+// - 매핑 오류 추정
+// - 링크 이동시 next_segments 부분의 반복적 계산 부분 수정
 
-trajectory2segment(traj)
+trajectory2segment(traj, param_segment_index=0)
 {
     start_segment_index = 0 // 매핑할 세그먼트에 첫번재 포인트의 인덱스
     end_segment_index = 0 // 매핑할 세그먼트에 마지막 포인트의 인덱스
     error_weight = 0 // 매핑 추정 과정에서 반복적으로 오류가 발견될 때 확인하는 변수
     count = 0 // 매핑 추정 과정의 리셋을 위한 카운터
-    mapping = {} // 매핑된 데이터
     gps_index = 0 // 현재 GPS 인덱스
+    segment_index = param_segment_index // 궤적이 지나는 세그먼트들 중에서 GPS 한점과 가장 가까운 세그먼트를 찾기위한 인덱스
+    segments_index = 0 // 궤적이 지나는 세그먼트들의 인덱스
+    contiune_index = -1
+    pre_index = 0
+
+    mapping = {} // 매핑된 데이터
     segments = [] // 궤적이 지나는 세그먼트들
     segment = {} // 궤적이 지나는 세그먼트들 중에 하나의 segment
-    segment_index = 0 // 궤적이 지나는 세그먼트들 중에서 GPS 한점과 가장 가까운 세그먼트를 찾기위한 인덱스
-    segments_index = 0 // 궤적이 지나는 세그먼트들의 인덱스
-
+    
     segment = find_segment(traj[gps_index])
     segments.append(segment)
-    s_gps = traj[gps_index] // 점과 점사이의 거리가 임계값을 넘어갔을 때, 이전 GPS
+    s_gps = traj[gps_index] // 점과 점사이의 거리가 임계값을 넘어갔을 때, 이전 GPSㅡ
 
-    for gps in traj[1:]
+    for gps in traj[1:] // 수정 : index로 변경 해야함
     {
-        p2p_distance = min_distance(s_gps, e_gps = gps)
         gps_index = traj.index(gps) // 현재 GPS index
-                
+        if gps_index < contiune_index
+        {
+            contiune
+        }
+        p2p_distance = min_distance(s_gps, e_gps = gps)
+
         if p2p_distance > p2p_value  // GPS들의 거리를 먼저구해 임계값의 포함되면 아래와 같은 계산을 하지 않고 매핑
         {
-            segment_range = impute_segment_range(gps, segments[segments_index][segment_index][geometry])
+            segment_range = impute_segment_range(gps,
+                                                 segments[segments_index][segment_index][geometry][0],
+                                                 segments[segments_index][segment_index][geometry][1])
             
             if segment_range
             {
+                
+                for idx in range(len(segments[segments_index][segment_index][geometry])):
+                (
+                    is_true = impute_segment_range(gps,
+                                                   segments[segments_index][segment_index][geometry][idx],
+                                                   segments[segments_index][segment_index][geometry][idx+1])
+                    if is_true
+                    {
+                        //
+                    }
+                )
                 p2s_distance = min_distance(gps, segments[segments_index][segment_index][geometry])
                 heading = bearing(s_gps , e_gps = gps, segments[segments_index][segment_index][geometry])
             }
             else
             {
-                segment = next_segments(segments[segments_index][segment_index][link_id], gps, gps_index, count) // 다음 새그먼트를 현재 새그먼트로 변환, count : 임계 값
+                segment, contiune_index, pre_index = next_segments(segments[segments_index][segment_index][link_id], gps, gps_index, count) // 다음 새그먼트를 현재 새그먼트로 변환, count : 임계 값
                 segments.append(segment)
                 segments_index = segments_index + 1
+                
                 p2s_distance = min_distance(gps, segments[segments_index][segment_index][geometry])
                 heading = bearing(s_gps, e_gps = gps, segments[segments_index][segment_index][geometry])
             }
@@ -62,7 +84,7 @@ trajectory2segment(traj)
                 mapping[segment_id] = start_segment_index, end_segment_index
                 start_segment_index = gps_index // start_segment_index을 현재 gps index로 변환
                 
-                s_gps = traj[gps_index] // s_gps을 현재 gps로 변환
+                s_gps = pre_index // s_gps을 현재 gps로 변환
             }
 
             //링크 유실, 매핑 오류
@@ -87,8 +109,8 @@ trajectory2segment(traj)
                         // 매핑 오류
                         if temp_segment
                         {
-                            처음으로 되돌아가서 작업 수행 (재귀함수 사용할 예정)
-                            segments[0][segment_index+1]
+                            처음으로 되돌아가서 작업 수행
+                            mapping = trajectory2segment(traj, segment_index=segment_index+1)
                         }
 
                         // 링크 유실
@@ -111,6 +133,7 @@ trajectory2segment(traj)
             }
         }
     }
+    return mapping
 }
 
 
@@ -121,7 +144,7 @@ find_segment(gps)
     return segments, -1
 }
 
-impute_segment_range(gps, segments)
+impute_segment_range(gps, segment_s_gps, segment_e_gps)
 {
     // gps가 segment의 양 끝 점을 기준으로 포함되었는지 확인
     return True or False
@@ -135,6 +158,19 @@ min_distance(gps1, gps2, segments)
 
 bearing(s_gps, e_gps, segments)
 {
+    def bearing(s_lat, s_lng, e_lat, e_lng):
+        lat1 = radians(s_lat)
+        lat2 = radians(e_lat)
+        diffLong = radians(e_lng - s_lng)
+
+        b_x = sin(diffLong) * cos(lat2)
+        b_y = cos(lat1) * sin(lat2) - (sin(lat1) * cos(lat2) * cos(diffLong))
+        initial_bearing = atan2(b_x, b_y)
+        initial_bearing = degrees(initial_bearing)
+        compass_bearing = (initial_bearing + 360) % 360 
+        return int(compass_bearing)
+
+
     // 두 GPS의 heading value와 segment heading value를 비교하여 유사하면 True, 아니면 Flase
     return True or False
 }
@@ -145,7 +181,7 @@ next_segments(segments, gps, gps_index, count)
     // gps = traj[gps_index]부터 min_distance(gps, next_gps)을 계산해 임계값을 벗어나는 포인트 2개를 찾고,
     // 포인트 2개와 가장 가까운 segment를 리턴
     // segments = {[link_id:{F_node, T_node, Lenth, geometry:[gps1, ... gpsn]}, ... ]}
-    return segments, index (수정필요 : gps_index or error(ex -1) 다음 gps계산을 미리 하기 때문에 - 재귀함수로 해결 할 예정)
+    return segments, index, pre_index (수정필요 : gps_index or error(ex -1) 다음 gps계산을 미리 하기 때문에 - 재귀함수로 해결 할 예정)
 }
 
 
