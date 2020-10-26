@@ -61,11 +61,11 @@ def trajectory2segment(param_segment_index=0):
             '''
             if segment_range:
             
-                for idx in range(len(segments[segments_index][segment_index][geometry])-1):
+                for idx in range(len(segments[segments_index][segment_index]['geometry']['coordinates'])-1):
                 
                     within_range = impute_segment_range(gps,
-                                                        segments[segments_index][segment_index][geometry][idx],
-                                                        segments[segments_index][segment_index][geometry][idx+1])
+                                                        segments[segments_index][segment_index]['geometry']['coordinates'][idx],
+                                                        segments[segments_index][segment_index]['geometry']['coordinates'][idx+1])
                     if within_range:
                     
                         p2s_distance = min_distance(gps,
