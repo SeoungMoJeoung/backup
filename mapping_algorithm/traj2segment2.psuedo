@@ -17,9 +17,11 @@ trajectory2segment(traj, param_segment_index=0)
     mapping = {} // 매핑된 데이터
     segments = [] // 궤적이 지나는 세그먼트들
     segment = {} // 궤적이 지나는 세그먼트들 중에 하나의 segment
-    
-    segment = find_segment(traj[gps_index])
-    segments.append(segment)
+    if param_segment_index == 0
+    {
+        segment = find_segment(traj[gps_index])
+        segments.append(segment)
+    }
     s_gps = traj[gps_index] // 점과 점사이의 거리가 임계값을 넘어갔을 때, 이전 GPSㅡ
 
     for gps in traj[1:] // 수정 : index로 변경 해야함
@@ -42,16 +44,19 @@ trajectory2segment(traj, param_segment_index=0)
                 
                 for idx in range(len(segments[segments_index][segment_index][geometry])):
                 (
-                    is_true = impute_segment_range(gps,
-                                                   segments[segments_index][segment_index][geometry][idx],
-                                                   segments[segments_index][segment_index][geometry][idx+1])
-                    if is_true
+                    within_range = impute_segment_range(gps,
+                                                        segments[segments_index][segment_index][geometry][idx],
+                                                        segments[segments_index][segment_index][geometry][idx+1])
+                    if within_range
                     {
-                        //
+                        p2s_distance = min_distance(gps,
+                                                    segments[segments_index][segment_index][idx],
+                                                    segments[segments_index][segment_index][idx+1])
+                        heading = bearing(s_gps, e_gps = gps,
+                                          segments[segments_index][segment_index][idx],
+                                          segments[segments_index][segment_index][idx+1])
                     }
                 )
-                p2s_distance = min_distance(gps, segments[segments_index][segment_index][geometry])
-                heading = bearing(s_gps , e_gps = gps, segments[segments_index][segment_index][geometry])
             }
             else
             {
@@ -59,8 +64,21 @@ trajectory2segment(traj, param_segment_index=0)
                 segments.append(segment)
                 segments_index = segments_index + 1
                 
-                p2s_distance = min_distance(gps, segments[segments_index][segment_index][geometry])
-                heading = bearing(s_gps, e_gps = gps, segments[segments_index][segment_index][geometry])
+                for idx in range(len(segments[segments_index][segment_index][geometry])):
+                (
+                    within_range = impute_segment_range(gps,
+                                                        segments[segments_index][segment_index][geometry][idx],
+                                                        segments[segments_index][segment_index][geometry][idx+1])
+                    if within_range
+                    {
+                        p2s_distance = min_distance(gps,
+                                                    segments[segments_index][segment_index][idx],
+                                                    segments[segments_index][segment_index][idx+1])
+                        heading = bearing(s_gps, e_gps = gps,
+                                          segments[segments_index][segment_index][idx],
+                                          segments[segments_index][segment_index][idx+1])
+                    }
+                )
             }
             
             // 유지
@@ -146,30 +164,19 @@ find_segment(gps)
 
 impute_segment_range(gps, segment_s_gps, segment_e_gps)
 {
+    // paul Bourke의 Minimum Distance between a Point and a Line의 세그먼트와 점이 직교하는 위치에 있는지 확인해주는 공식 이용
     // gps가 segment의 양 끝 점을 기준으로 포함되었는지 확인
     return True or False
 }
 
-min_distance(gps1, gps2, segments)
+min_distance(gps1, gps2, segment1, segment2)
 {
     // 2개의 GPS의 거리를 계산 or GPS와 segment의 거리를 계산
     return int
 }
 
-bearing(s_gps, e_gps, segments)
+bearing(s_gps, e_gps, segment1, segment2)
 {
-    def bearing(s_lat, s_lng, e_lat, e_lng):
-        lat1 = radians(s_lat)
-        lat2 = radians(e_lat)
-        diffLong = radians(e_lng - s_lng)
-
-        b_x = sin(diffLong) * cos(lat2)
-        b_y = cos(lat1) * sin(lat2) - (sin(lat1) * cos(lat2) * cos(diffLong))
-        initial_bearing = atan2(b_x, b_y)
-        initial_bearing = degrees(initial_bearing)
-        compass_bearing = (initial_bearing + 360) % 360 
-        return int(compass_bearing)
-
 
     // 두 GPS의 heading value와 segment heading value를 비교하여 유사하면 True, 아니면 Flase
     return True or False
