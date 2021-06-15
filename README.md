@@ -46,3 +46,4 @@ test(a)
 * * *
 
 ### 이미지
+![이미지 연습](https://static.smalljoys.me/2020/04/2030168_guPtp_1587522410.jpg)
