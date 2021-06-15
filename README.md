@@ -51,3 +51,5 @@ test(a)
 ![이미지 연습](https://static.smalljoys.me/2020/04/2030168_guPtp_1587522410.jpg)
 
 이미지 git에 올려서 가져오기
+
+![사진](./사진.jpg)
