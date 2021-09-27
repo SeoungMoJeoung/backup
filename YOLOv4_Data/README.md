@@ -13,3 +13,7 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 
 - ver1 방법에 shuffle 적용한후 train/val/test(8:1:1)로 split
 - `json_data["annotations"]["segmentation"]`의 값이 "존재, 존재X, 존재+존재X" 3가지 타입의 train/val/test data 생성
+
+## NIA_image_data.py
+
+- 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
