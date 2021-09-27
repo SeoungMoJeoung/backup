@@ -17,3 +17,4 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 ## NIA_image_data.py
 
 - 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
+- image data는 구글 
