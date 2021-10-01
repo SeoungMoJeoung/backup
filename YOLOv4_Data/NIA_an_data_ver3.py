@@ -12,6 +12,7 @@ def annotaions_preprocessing(per_an_data, an_num, num):
 def data_insert(pre_data, an_idxing_data, data, start_idx, end_idx, num, an_num, idx_list, version):
     temp_idx_list = idx_list[start_idx:end_idx]
     for idx in temp_idx_list:
+        image_check = False
         i = pre_data["images"][idx]
         if an_idxing_data.get(i["id"]):
             for j in an_idxing_data[i["id"]]:
@@ -19,19 +20,24 @@ def data_insert(pre_data, an_idxing_data, data, start_idx, end_idx, num, an_num,
                     if not j["segmentation"]:
                         per_an_data, an_num = annotaions_preprocessing(j, an_num, num)
                         data["annotations"].append(per_an_data)
+                        image_check = True
                 elif version == '1':
                     if j["segmentation"]:
                         per_an_data, an_num = annotaions_preprocessing(j, an_num, num)
                         data["annotations"].append(per_an_data)
+                        image_check = True
                 elif version == '0':
                     per_an_data, an_num = annotaions_preprocessing(j, an_num, num)
                     data["annotations"].append(per_an_data)
-        i["id"] = num
-        num += 1
-        data["images"].append(i)
+                    image_check = True
+        if image_check:
+            i["id"] = num
+            num += 1
+            data["images"].append(i)
          # test
 #        if i["id"] == 2:
 #            print(json.dumps(data))
+#            sys.exit()
 #            break
     return data, num, an_num
 
@@ -101,14 +107,15 @@ def main():
                 val_data, val_number, annotation_val_number = data_insert(json_data, annotation_idx_data, val_data, val_idx, test_idx, val_number, annotation_val_number, total_idx_list, version)
                 test_data, test_number, annotation_test_number = data_insert(json_data, annotation_idx_data, test_data, test_idx, total_idx, test_number, annotation_test_number, total_idx_list, version)
 
-    print(len(train_data["annotations"]), len(val_data["annotations"]), len(test_data["annotations"]))
+    print(len(train_data["images"]), len(val_data["images"]), len(test_data["images"]))
     
+    '''
     if version == '0':
         file_write("total", train_data, val_data, test_data)
     elif version == '1':
         file_write("seg", train_data, val_data, test_data)
     elif version == '2':
         file_write("not_seg", train_data, val_data, test_data)
-    
+    '''
     
 main()
