@@ -17,6 +17,7 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 ## NIA_an_data_ver3py
 
 - json 데이터에 image, annotation 정보는 있지만 이미지 데이터가 없는 경우 존재 -> json 데이터에서 필터
+- 기존 json 데이터의 images 속성을 모든 이미지를 다 넣어주었었음 -> json 데이터마다 필요한 image 정보만 넣어줌
 
 ## NIA_image_data.py
 
