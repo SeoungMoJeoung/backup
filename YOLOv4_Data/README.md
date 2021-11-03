@@ -19,18 +19,19 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 - json 데이터에 image, annotation 정보는 있지만 이미지 데이터가 없는 경우 존재 -> json 데이터에서 필터
 - 기존 json 데이터의 images 속성을 모든 이미지를 다 넣어주었었음 -> json 데이터마다 필요한 image 정보만 넣어줌
 
-## NIA_preprocess_image.py
-
-- 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
-- image data는 구글 드라이버
+---
 
 ## NIA_preprocess_image.py
 
 - 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
 - image data는 구글 드라이버
 
+## NIA_preprocess_image.py
 
-![사진](./)
+- 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
+- image data는 구글 드라이버
+
+---
 
 ## NIA_preprocess_tracking_ver1.py
 
@@ -42,3 +43,5 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 
 - tracking의 대한 정보를 추출한 json 파일을 tracking 학습에 필요한 리스트 데이터로 전처리
 - 입력 출력 적을것 설명도
+
+![사진](./) ->
