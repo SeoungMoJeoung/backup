@@ -29,10 +29,13 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 - 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
 - image data는 구글 드라이버
 
+![사진](./)
+
 ## NIA_preprocess_tracking_ver1.py
 
 - json 데이터에 image, annotation 정보 이외에 tracking 데이터가 존재 -> tracking의 대한 정보 추출
 - 입력 출력 적을 것 설명도 그림도 
+
 
 ## NIA_preprocess_tracking_ver2.py
 
