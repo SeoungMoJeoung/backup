@@ -44,4 +44,4 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 - tracking의 대한 정보를 추출한 json 파일을 tracking 학습에 필요한 리스트 데이터로 전처리
 - 입력 출력 적을것 설명도
 
-![사진](./사진/tracking_1.png) ->
+![사진](./사진/tracking_1.png){width="300" height="300"} ->
