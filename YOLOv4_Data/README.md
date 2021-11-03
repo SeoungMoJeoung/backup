@@ -26,26 +26,21 @@ MSCOCO 2017은 YOLOv4에 사용되는 데이터로써 NIA과제로부터 얻은 
 - 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
 - image data는 구글 드라이버
 
-## NIA_preprocess_image.py
-
-- 한 곳에 모여있는 이미지 데이터들을 train/val/test 별로 분류 (하지만, 한 파일에 있어도 상관없으므로 더 이상 업데이트 X)
-- image data는 구글 드라이버
-
 ---
 
 ## NIA_preprocess_tracking_ver1.py
 
+- Input : json 데이터(raw data), Output : json 데이터(key : track id, value : category_id, segmentation, Status, bbox)
 - json 데이터에 image, annotation 정보 이외에 tracking 데이터가 존재 -> tracking의 대한 정보 추출
-- 입력 출력 적을 것 설명도 그림도 
-
 
 ## NIA_preprocess_tracking_ver2.py
 
+- Input : json 데이터(raw data), Output : list([Status, category_id, [bbox[i], bbox[i+1], bbox[i+2], bbox[i+3], bbox[i+4]], ...]
 - tracking의 대한 정보를 추출한 json 파일을 tracking 학습에 필요한 리스트 데이터로 전처리
-- 입력 출력 적을것 설명도
+- raw data의 track_id를 기준으로 정렬하여 데이터를 추출한 후, 각 행은 track id가 같은 데이터끼리 연속적으로 bbox를 추출하여(파라미터를 통해 연속적인 n개 bbox 추출 가능) 전처리 수행
 
 ### Input
 <img src = "./사진/tracking_1.png" width="20%" height="20%">
 
 ### Output
-<img src = "./사진/tracking_2.png" width="20%" height="20%">
+<img src = "./사진/tracking_2.png">
